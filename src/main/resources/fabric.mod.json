@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "executormod",
+  "version": "1.0.0",
+  "name": "Executor",
+  "description": "Executor script Lua di client Minecraft. Tekan H untuk membuka UI.",
+  "authors": ["kamu"],
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.executormod.ExecutorMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.0",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

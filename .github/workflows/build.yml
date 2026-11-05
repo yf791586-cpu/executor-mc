@@ -1,0 +1,29 @@
+name: build
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.2.0
+      - name: Cari versi Fabric terbaru untuk 1.21.11
+        run: |
+          MC=1.21.11
+          YARN=$(curl -fsSL https://meta.fabricmc.net/v2/versions/yarn/$MC | jq -r '.[0].version')
+          LOADER=$(curl -fsSL https://meta.fabricmc.net/v2/versions/loader | jq -r '[.[]|select(.stable==true)][0].version')
+          API=$(curl -fsSL https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml | grep -o "<version>[^<]*+$MC</version>" | tail -n1 | sed 's/<[^>]*>//g')
+          echo "yarn=$YARN loader=$LOADER api=$API"
+          echo "EXTRA=-Pyarn_mappings=$YARN -Ploader_version=$LOADER -Pfabric_version=$API" >> "$GITHUB_ENV"
+      - run: gradle build $EXTRA
+      - uses: actions/upload-artifact@v4
+        with:
+          name: executormod-jar
+          path: build/libs/*.jar
