@@ -49,7 +49,7 @@ public class ExecutorScreen extends Screen {
                 .dimensions(px + (bw + 4), by, bw, 20).build());
         addDrawableChild(ButtonWidget.builder(Text.literal("Stop"), b -> ScriptRunner.stop("Script dihentikan"))
                 .dimensions(px + (bw + 4) * 2, by, bw, 20).build());
-        addDrawableChild(ButtonWidget.builder(Text.literal("Reload"), b -> clearAndInit())
+        addDrawableChild(ButtonWidget.builder(Text.literal("Reload"), b -> reloadScripts())
                 .dimensions(px + (bw + 4) * 3, by, bw, 20).build());
 
         List<Path> files = ScriptRunner.listScripts();
@@ -100,7 +100,7 @@ public class ExecutorScreen extends Screen {
         ScriptRunner.start(lastLine);
     }
 
-    private void clearAndInit() {
+    private void reloadScripts() {
         clearChildren();
         init();
     }
